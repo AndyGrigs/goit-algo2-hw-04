@@ -2,7 +2,20 @@ from trie import Trie
 
 class Homework(Trie):
     def count_words_with_suffix(self, pattern) -> int:
-        pass
+        if not isinstance(pattern, str):
+            return 0
+        if pattern == "":
+            return 0
+        count = 0
+        def searcher(node, current_word):
+            nonlocal count
+            if node.is_end:
+                if current_word.endswith(pattern):
+                    count += 1
+            for char, child_node in node.children.items():
+                searcher(child_node, current_word + char)
+        searcher(self.root, "")
+        return count
 
     def has_prefix(self, prefix) -> bool:
         if not isinstance(prefix, str):
@@ -37,12 +50,4 @@ if __name__ == "__main__":
     assert trie.has_prefix("ban") == True  # banana
     assert trie.has_prefix("ca") == True  # cat
 
-# if __name__ == "__main__":
-#     trie = Homework()
-#     trie.put("apple", 0)
-#     trie.put("application", 1)
-#     trie.put("banana", 2)
-    
-#     print(trie.has_prefix("app"))   # Має вивести: True
-#     print(trie.has_prefix("ban"))   # Має вивести: True
-#     print(trie.has_prefix("cat"))   # Має вивести: False
+    print("Всі тести пройдені успішно!")
